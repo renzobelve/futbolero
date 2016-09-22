@@ -46,12 +46,12 @@ public class StartState extends PlayerState {
     }
 
     @Override
-    public void changeAnswerTime(int time) {
+    public void changeAnswerTime() {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void discardAnswers(int countDiscard) {
+    public void discardAnswers() {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
@@ -68,6 +68,7 @@ public class StartState extends PlayerState {
     @Override
     public void selectAsChallanger(Player player) {
         player.setChallanger(this.getPlayer());
+        this.getPlayer().setChallanger(player);
         this.changeState(new AnswerState(this.getPlayer()));
     }
 
@@ -88,7 +89,8 @@ public class StartState extends PlayerState {
 
     @Override
     public void finishTurn() {
-        // TO-DO
+        this.changeState(new EndState(this.getPlayer()));
+        this.getPlayer().finishTurn();
     }
 
 }

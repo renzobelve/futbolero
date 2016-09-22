@@ -86,18 +86,16 @@ public abstract class PlayerState {
     public abstract boolean answerQuestion(Answer answer);
 
     /**
-     * @param time
      *
      * Metodo que cambia la cantidad de tiempo disponible para una respuesta
      */
-    public abstract void changeAnswerTime(int time);
+    public abstract void changeAnswerTime();
 
     /**
-     * @param countDiscard
      *
      * Metodo que descarta posibles respuestas falsas
      */
-    public abstract void discardAnswers(int countDiscard);
+    public abstract void discardAnswers();
 
     /**
      * @param situationCard

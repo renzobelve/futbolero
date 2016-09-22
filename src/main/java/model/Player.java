@@ -30,6 +30,7 @@ class Player {
     private int countAnswers;
     private int answerTime;
     private boolean hasNextTurn;
+    private boolean hasToDrawQuestion;
 
     // Constructors ----------------------------
     public Player(String name) {
@@ -48,6 +49,7 @@ class Player {
         this.countAnswers = Question.QUESTION_ANSWERS;
         this.answerTime = Question.QUESTION_TIME;
         this.hasNextTurn = true;
+        this.hasToDrawQuestion = false;
     }
 
     // Getters & Setters ----------------------------
@@ -262,6 +264,20 @@ class Player {
     }
 
     /**
+     * @return the hasToDrawQuestion
+     */
+    public boolean isHasToDrawQuestion() {
+        return hasToDrawQuestion;
+    }
+
+    /**
+     * @param hasToDrawQuestion the hasToDrawQuestion to set
+     */
+    public void setHasToDrawQuestion(boolean hasToDrawQuestion) {
+        this.hasToDrawQuestion = hasToDrawQuestion;
+    }
+
+    /**
      * @return the situationCards
      */
     public List<SituationCard> getSituationCards() {
@@ -326,7 +342,6 @@ class Player {
      * resultado
      */
     public boolean answerQuestion(Answer answer) {
-        // TO-DO
         return this.getState().answerQuestion(answer);
     }
 
@@ -335,8 +350,8 @@ class Player {
      *
      * Metodo que cambia la cantidad de tiempo disponible para una respuesta
      */
-    public void changeAnswerTime(int time) {
-        this.getState().changeAnswerTime(time);
+    public void changeAnswerTime() {
+        this.getState().changeAnswerTime();
     }
 
     /**
@@ -344,8 +359,8 @@ class Player {
      *
      * Metodo que descarta posibles respuestas falsas
      */
-    public void discardAnswers(int countDiscard) {
-        this.getState().discardAnswers(countDiscard);
+    public void discardAnswers() {
+        this.getState().discardAnswers();
     }
 
     /**

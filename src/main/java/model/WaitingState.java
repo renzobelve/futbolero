@@ -24,6 +24,9 @@ public class WaitingState extends PlayerState{
     public void selectQuestion(Question question) {
         this.getPlayer().getChallanger().setChallangeQuestion(question);
         this.getPlayer().getQuestions().remove(question);
+        if(this.getPlayer().getQuestions().isEmpty()){
+            this.getPlayer().setHasToDrawQuestion(true);
+        }
     }
 
     @Override
@@ -47,12 +50,12 @@ public class WaitingState extends PlayerState{
     }
 
     @Override
-    public void changeAnswerTime(int time) {
+    public void changeAnswerTime() {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void discardAnswers(int countDiscard) {
+    public void discardAnswers() {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 

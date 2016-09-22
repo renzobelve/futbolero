@@ -60,7 +60,7 @@ public class PlayerTest {
         Assert.assertEquals(0, this.player1.getQuestions().size());
 
         // Draw Question
-        if (this.player1.getQuestions().isEmpty()) {
+        if (this.player1.isHasToDrawQuestion()) {
             Question question1 = null;
             Question question2 = null;
             Question question3 = null;
@@ -143,5 +143,77 @@ public class PlayerTest {
         this.player1.selectAsChallanger(this.player2);
         Assert.assertEquals(this.player2.getChallanger(), this.player1);
         Assert.assertEquals(this.player1.getState().getClass(), AnswerState.class);
+    }
+
+    @Test
+    public void testFinishTurn() {
+        this.player1.playTurn();
+        Assert.assertEquals(this.player1.getState().getClass(), StartState.class);
+        this.player1.finishTurn();
+        Assert.assertEquals(this.player1.getState().getClass(), EndState.class);
+    }
+
+    @Test
+    public void testChangeQuestion() {
+        String questionString1 = "¿Cuantas veces salio campeon mundial la seleccion Argentina?";
+        Answer answer1 = new Answer("2", true);
+        Answer answer2 = new Answer("3", false);
+        Answer answer3 = new Answer("4", false);
+        Answer answer4 = new Answer("5", false);
+        ArrayList<Answer> answers1 = new ArrayList<>();
+        answers1.add(answer1);
+        answers1.add(answer2);
+        answers1.add(answer3);
+        answers1.add(answer4);
+        try {
+            this.player1.getQuestions().add(new Question(questionString1, answers1));
+        } catch (QuestionMalformedException ex) {
+            Assert.fail(ex.getMessage());
+        }
+
+        String questionString2 = "¿Quien fue el ultimo campeon mundial?";
+        Answer answer5 = new Answer("Alemania", true);
+        Answer answer6 = new Answer("Brasil", false);
+        Answer answer7 = new Answer("Argentina", false);
+        Answer answer8 = new Answer("Holanda", false);
+        ArrayList<Answer> answers2 = new ArrayList<>();
+        answers2.add(answer5);
+        answers2.add(answer6);
+        answers2.add(answer7);
+        answers2.add(answer8);
+        try {
+            this.player1.getQuestions().add(new Question(questionString2, answers2));
+        } catch (QuestionMalformedException ex) {
+            Assert.fail(ex.getMessage());
+        }
+
+        this.player2.playTurn();
+        Assert.assertEquals(this.player2.getState().getClass(), StartState.class);
+        this.player2.selectAsChallanger(this.player1);
+        this.player1.selectQuestion(this.player1.getQuestions().get(0));
+        this.player2.changeQuestion();
+        Assert.assertEquals(1, this.player1.getQuestions().size());
+        Assert.assertNotEquals(this.player2.getChallangeQuestion(), this.player1.getQuestions().get(0));
+    }
+
+    @Test
+    public void testAnswerQuestion() {
+        this.player2.playTurn();
+        Assert.assertEquals(this.player2.getState().getClass(), StartState.class);
+        this.player2.selectAsChallanger(this.player1);
+        this.player1.selectQuestion(this.player1.getQuestions().get(0));
+        Assert.assertTrue(this.player2.answerQuestion(this.player2.getChallangeQuestion().getAnswers().get(1)));
+        Assert.assertEquals(this.player2.getState().getClass(), BoardState.class);
+    }
+
+    @Test
+    public void testChangeAnswerTime() {
+        this.player2.setAnswerTime(10);
+        this.player2.playTurn();
+        Assert.assertEquals(this.player2.getState().getClass(), StartState.class);
+        this.player2.selectAsChallanger(this.player1);
+        this.player1.selectQuestion(this.player1.getQuestions().get(0));
+        this.player2.changeAnswerTime();
+        Assert.assertNotEquals(this.player2.getChallangeQuestion().getAnswerTime(), Question.QUESTION_TIME);
     }
 }
