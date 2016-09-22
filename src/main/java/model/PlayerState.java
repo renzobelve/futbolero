@@ -50,12 +50,11 @@ public abstract class PlayerState {
 
     /**
      * @param question
-     * @param player
      *
      * Metodo que selecciona una pregunta disponible y la setea como
      * challangeQuestion del jugador retado
      */
-    public abstract void selectQuestion(Question question, Player player);
+    public abstract void selectQuestion(Question question);
 
     /**
      * Metodo que cambia la pregunta actual del jugador por otra de forma
@@ -120,7 +119,7 @@ public abstract class PlayerState {
      *
      * Metodo que selecciona a un jugador como retador
      */
-    public abstract void selectChallanger(Player player);
+    public abstract void selectAsChallanger(Player player);
 
     /**
      * @param slot

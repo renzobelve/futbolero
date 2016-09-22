@@ -53,7 +53,9 @@ public class PlayerTest {
         // Select Question
         Assert.assertEquals(this.player1.getState().getClass(), WaitingState.class);
         Question question = this.player1.getQuestions().get(0);
-        this.player1.selectQuestion(question, player2);
+        this.player2.playTurn();
+        this.player2.selectAsChallanger(this.player1);
+        this.player1.selectQuestion(question);
         Assert.assertNotNull(player2.getChallangeQuestion());
         Assert.assertEquals(0, this.player1.getQuestions().size());
 
@@ -133,9 +135,13 @@ public class PlayerTest {
             Assert.assertEquals(4, this.player1.getQuestions().size());
         }
     }
-    
-    public void testPlaySituation(){
-        
-    }
 
+    @Test
+    public void testSelectChallenger() {
+        this.player1.playTurn();
+        Assert.assertEquals(this.player1.getState().getClass(), StartState.class);
+        this.player1.selectAsChallanger(this.player2);
+        Assert.assertEquals(this.player2.getChallanger(), this.player1);
+        Assert.assertEquals(this.player1.getState().getClass(), AnswerState.class);
+    }
 }

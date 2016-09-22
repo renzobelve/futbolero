@@ -290,8 +290,8 @@ class Player {
      * Metodo que selecciona una pregunta disponible y la setea como
      * challangeQuestion del jugador retado
      */
-    public void selectQuestion(Question question, Player player) {
-        this.getState().selectQuestion(question, player);
+    public void selectQuestion(Question question) {
+        this.getState().selectQuestion(question);
     }
 
     /**
@@ -372,8 +372,8 @@ class Player {
      *
      * Metodo que selecciona a un jugador como retador
      */
-    public void selectChallanger(Player player) {
-        this.getState().selectChallanger(player);
+    public void selectAsChallanger(Player player) {
+        this.getState().selectAsChallanger(player);
     }
 
     /**

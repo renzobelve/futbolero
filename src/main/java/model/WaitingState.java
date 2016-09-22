@@ -21,8 +21,8 @@ public class WaitingState extends PlayerState{
     }
 
     @Override
-    public void selectQuestion(Question question, Player targetPlayer) {
-        targetPlayer.setChallangeQuestion(question);
+    public void selectQuestion(Question question) {
+        this.getPlayer().getChallanger().setChallangeQuestion(question);
         this.getPlayer().getQuestions().remove(question);
     }
 
@@ -67,7 +67,7 @@ public class WaitingState extends PlayerState{
     }
 
     @Override
-    public void selectChallanger(Player player) {
+    public void selectAsChallanger(Player player) {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
