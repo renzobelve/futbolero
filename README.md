@@ -6,3 +6,5 @@ El juego para los que mas saben de fútbol
 - Conocimiento
 
 Desarrollado por Renzo Belvedere - 2016
+
+- Powered By Heroku
