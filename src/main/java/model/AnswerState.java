@@ -34,10 +34,10 @@ public class AnswerState extends PlayerState {
         if (this.getPlayer().isHasChange()) {
             // Determina de forma aleatoria la pregunta para cambiar
             Random randomNumber = new Random();
-            int randomQuestionNumber = randomNumber.nextInt(this.getPlayer().getChallanger().getQuestions().size());
-            Question questionChange = this.getPlayer().getChallanger().getQuestions().get(randomQuestionNumber);
+            int randomQuestionNumber = randomNumber.nextInt(this.getPlayer().getChallenger().getQuestions().size());
+            Question questionChange = this.getPlayer().getChallenger().getQuestions().get(randomQuestionNumber);
             // Se cambia la pregunta actual por la nueva
-            this.getPlayer().getChallanger().selectQuestion(questionChange);
+            this.getPlayer().getChallenger().selectQuestion(questionChange);
         } else {
             throw new PlayerStateWrongException();
         }
@@ -68,7 +68,7 @@ public class AnswerState extends PlayerState {
     @Override
     public void changeAnswerTime() throws PlayerStateWrongException {
         if (this.getPlayer().getAnswerTime() < Question.QUESTION_TIME) {
-            this.getPlayer().getChallangeQuestion().setAnswerTime(this.getPlayer().getAnswerTime());
+            this.getPlayer().getChallengeQuestion().setAnswerTime(this.getPlayer().getAnswerTime());
         } else {
             throw new PlayerStateWrongException();
         }
@@ -80,10 +80,10 @@ public class AnswerState extends PlayerState {
             int answersToDiscount = Question.QUESTION_ANSWERS - this.getPlayer().getCountAnswers();
             for (int i = 0; i < answersToDiscount; i++) {
                 Random randomNumber = new Random();
-                int randomAnswerNumber = randomNumber.nextInt(this.getPlayer().getChallangeQuestion().getAnswers().size());
-                Answer answer = this.getPlayer().getChallangeQuestion().getAnswers().get(randomAnswerNumber);
+                int randomAnswerNumber = randomNumber.nextInt(this.getPlayer().getChallengeQuestion().getAnswers().size());
+                Answer answer = this.getPlayer().getChallengeQuestion().getAnswers().get(randomAnswerNumber);
                 if (!answer.isIsCorrect()) {
-                    this.getPlayer().getChallangeQuestion().getAnswers().remove(answer);
+                    this.getPlayer().getChallengeQuestion().getAnswers().remove(answer);
                 } else {
                     i--;
                 }

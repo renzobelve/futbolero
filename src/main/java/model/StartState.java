@@ -70,8 +70,8 @@ public class StartState extends PlayerState {
 
     @Override
     public void selectAsChallanger(Player player) {
-        player.setChallanger(this.getPlayer());
-        this.getPlayer().setChallanger(player);
+        player.setChallenger(this.getPlayer());
+        this.getPlayer().setChallenger(player);
         this.changeState(new AnswerState(this.getPlayer()));
     }
 

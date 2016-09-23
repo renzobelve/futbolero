@@ -20,8 +20,8 @@ class Player {
     private List<Slot> slots;
     private Game actualGame;
     private List<Question> questions;
-    private Question challangeQuestion;
-    private Player challanger;
+    private Question challengeQuestion;
+    private Player challenger;
     private List<SituationCard> situationCards;
     private PlayerState state;
 
@@ -41,8 +41,8 @@ class Player {
         this.slots = new ArrayList<>();
         this.actualGame = null;
         this.questions = new ArrayList<>();
-        this.challangeQuestion = null;
-        this.challanger = null;
+        this.challengeQuestion = null;
+        this.challenger = null;
         this.situationCards = new ArrayList<>();
         this.state = new WaitingState(this);
         this.countWarnings = 0;
@@ -127,31 +127,31 @@ class Player {
     }
 
     /**
-     * @return the challangeQuestion
+     * @return the challengeQuestion
      */
-    public Question getChallangeQuestion() {
-        return challangeQuestion;
+    public Question getChallengeQuestion() {
+        return challengeQuestion;
     }
 
     /**
-     * @param challangeQuestion the challangeQuestion to set
+     * @param challengeQuestion the challengeQuestion to set
      */
-    public void setChallangeQuestion(Question challangeQuestion) {
-        this.challangeQuestion = challangeQuestion;
+    public void setChallengeQuestion(Question challengeQuestion) {
+        this.challengeQuestion = challengeQuestion;
     }
 
     /**
-     * @return the challanger
+     * @return the challenger
      */
-    public Player getChallanger() {
-        return challanger;
+    public Player getChallenger() {
+        return challenger;
     }
 
     /**
-     * @param challanger the challanger to set
+     * @param challenger the challenger to set
      */
-    public void setChallanger(Player challanger) {
-        this.challanger = challanger;
+    public void setChallenger(Player challenger) {
+        this.challenger = challenger;
     }
 
     /**
@@ -307,7 +307,7 @@ class Player {
      * @param player
      *
      * Metodo que selecciona una pregunta disponible y la setea como
-     * challangeQuestion del jugador retado
+ challengeQuestion del jugador retado
      */
     public void selectQuestion(Question question) {
         this.getState().selectQuestion(question);

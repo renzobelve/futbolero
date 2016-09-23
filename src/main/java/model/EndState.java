@@ -90,9 +90,9 @@ public class EndState extends PlayerState {
 
     @Override
     public void finishTurn() {
-        this.getPlayer().setChallangeQuestion(null);
-        this.getPlayer().getChallanger().setChallanger(null);
-        this.getPlayer().setChallanger(null);
+        this.getPlayer().setChallengeQuestion(null);
+        this.getPlayer().getChallenger().setChallenger(null);
+        this.getPlayer().setChallenger(null);
         this.changeState(new WaitingState(this.getPlayer()));
     }
 

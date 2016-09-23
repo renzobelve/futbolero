@@ -55,7 +55,7 @@ public class PlayerTest {
         this.player2.playTurn();
         this.player2.selectAsChallanger(this.player1);
         this.player1.selectQuestion(question);
-        Assert.assertNotNull(player2.getChallangeQuestion());
+        Assert.assertNotNull(player2.getChallengeQuestion());
         Assert.assertEquals(0, this.player1.getQuestions().size());
 
         // Draw Question
@@ -144,7 +144,7 @@ public class PlayerTest {
         this.player1.playTurn();
         Assert.assertEquals(this.player1.getState().getClass(), StartState.class);
         this.player1.selectAsChallanger(this.player2);
-        Assert.assertEquals(this.player2.getChallanger(), this.player1);
+        Assert.assertEquals(this.player2.getChallenger(), this.player1);
         Assert.assertEquals(this.player1.getState().getClass(), AnswerState.class);
     }
 
@@ -154,12 +154,12 @@ public class PlayerTest {
         Assert.assertEquals(this.player2.getState().getClass(), StartState.class);
         this.player2.selectAsChallanger(this.player1);
         this.player1.selectQuestion(this.player1.getQuestions().get(0));
-        this.player2.answerQuestion(this.player2.getChallangeQuestion().getAnswers().get(1));
+        this.player2.answerQuestion(this.player2.getChallengeQuestion().getAnswers().get(1));
         Assert.assertEquals(this.player2.getState().getClass(), BoardState.class);
         this.player2.finishTurn();
-        Assert.assertNull(this.player2.getChallangeQuestion());
-        Assert.assertNull(this.player2.getChallanger());
-        Assert.assertNull(this.player1.getChallanger());
+        Assert.assertNull(this.player2.getChallengeQuestion());
+        Assert.assertNull(this.player2.getChallenger());
+        Assert.assertNull(this.player1.getChallenger());
         Assert.assertEquals(this.player2.getState().getClass(), WaitingState.class);
     }
 
@@ -208,7 +208,7 @@ public class PlayerTest {
             Assert.fail(ex.getMessage());
         }
         Assert.assertEquals(1, this.player1.getQuestions().size());
-        Assert.assertNotEquals(this.player2.getChallangeQuestion(), this.player1.getQuestions().get(0));
+        Assert.assertNotEquals(this.player2.getChallengeQuestion(), this.player1.getQuestions().get(0));
     }
 
     @Test
@@ -217,7 +217,7 @@ public class PlayerTest {
         Assert.assertEquals(this.player2.getState().getClass(), StartState.class);
         this.player2.selectAsChallanger(this.player1);
         this.player1.selectQuestion(this.player1.getQuestions().get(0));
-        Assert.assertTrue(this.player2.answerQuestion(this.player2.getChallangeQuestion().getAnswers().get(1)));
+        Assert.assertTrue(this.player2.answerQuestion(this.player2.getChallengeQuestion().getAnswers().get(1)));
         Assert.assertEquals(this.player2.getState().getClass(), BoardState.class);
     }
 
@@ -233,7 +233,7 @@ public class PlayerTest {
         } catch (PlayerStateWrongException ex) {
             Assert.fail(ex.getMessage());
         }
-        Assert.assertNotEquals(this.player2.getChallangeQuestion().getAnswerTime(), Question.QUESTION_TIME);
+        Assert.assertNotEquals(this.player2.getChallengeQuestion().getAnswerTime(), Question.QUESTION_TIME);
     }
 
     @Test
@@ -248,7 +248,7 @@ public class PlayerTest {
         } catch (PlayerStateWrongException ex) {
             Assert.fail(ex.getMessage());
         }
-        Assert.assertEquals(2, this.player2.getChallangeQuestion().getAnswers().size());
+        Assert.assertEquals(2, this.player2.getChallengeQuestion().getAnswers().size());
     }
 
     @Test
@@ -258,16 +258,16 @@ public class PlayerTest {
         Assert.assertEquals(this.player2.getState().getClass(), StartState.class);
         this.player2.selectAsChallanger(this.player1);
         this.player1.selectQuestion(this.player1.getQuestions().get(0));
-        this.player2.answerQuestion(this.player2.getChallangeQuestion().getAnswers().get(1));
+        this.player2.answerQuestion(this.player2.getChallengeQuestion().getAnswers().get(1));
         Assert.assertEquals(this.player2.getState().getClass(), BoardState.class);
         try {
             this.player2.invalidateQuestion();
         } catch (PlayerStateWrongException ex) {
             Assert.fail(ex.getMessage());
         }
-        Assert.assertNull(this.player2.getChallangeQuestion());
-        Assert.assertNull(this.player2.getChallanger());
-        Assert.assertNull(this.player1.getChallanger());
+        Assert.assertNull(this.player2.getChallengeQuestion());
+        Assert.assertNull(this.player2.getChallenger());
+        Assert.assertNull(this.player1.getChallenger());
         Assert.assertEquals(this.player2.getState().getClass(), StartState.class);
     }
 
@@ -278,7 +278,7 @@ public class PlayerTest {
         Assert.assertEquals(this.player2.getState().getClass(), StartState.class);
         this.player2.selectAsChallanger(this.player1);
         this.player1.selectQuestion(this.player1.getQuestions().get(0));
-        this.player2.answerQuestion(this.player2.getChallangeQuestion().getAnswers().get(1));
+        this.player2.answerQuestion(this.player2.getChallengeQuestion().getAnswers().get(1));
         Assert.assertEquals(this.player2.getState().getClass(), BoardState.class);
         this.player2.drawSituation(new SituationCard("Amonestacion", "Situacion de Amonestacion"));
         Assert.assertEquals(1, this.player2.getSituationCards().size());

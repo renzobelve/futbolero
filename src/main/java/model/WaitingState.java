@@ -29,7 +29,7 @@ public class WaitingState extends PlayerState {
 
     @Override
     public void selectQuestion(Question question) {
-        this.getPlayer().getChallanger().setChallangeQuestion(question);
+        this.getPlayer().getChallenger().setChallengeQuestion(question);
         this.getPlayer().getQuestions().remove(question);
         if (this.getPlayer().getQuestions().isEmpty()) {
             this.getPlayer().setHasToDrawQuestion(true);

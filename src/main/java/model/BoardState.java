@@ -36,9 +36,9 @@ public class BoardState extends PlayerState {
     @Override
     public void invalidateQuestion() throws PlayerStateWrongException {
         if (this.getPlayer().isIsOffside()) {
-            this.getPlayer().setChallangeQuestion(null);
-            this.getPlayer().getChallanger().setChallanger(null);
-            this.getPlayer().setChallanger(null);
+            this.getPlayer().setChallengeQuestion(null);
+            this.getPlayer().getChallenger().setChallenger(null);
+            this.getPlayer().setChallenger(null);
             this.changeState(new StartState(this.getPlayer()));
         } else {
             throw new PlayerStateWrongException();
