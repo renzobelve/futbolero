@@ -1,15 +1,18 @@
 package model;
 
+import exception.PlayerStateWrongException;
 import exception.SituationWrongException;
+import exception.SlotEmptyException;
+import exception.SlotFullException;
 import java.util.List;
 
 /**
  *
  * @author renzobelve
- * 
+ *
  * Clase que representa el estado de Waiting
  */
-public class WaitingState extends PlayerState{
+public class WaitingState extends PlayerState {
 
     public WaitingState(Player player) {
         super(player);
@@ -17,31 +20,39 @@ public class WaitingState extends PlayerState{
 
     @Override
     public void playTurn() {
-        this.changeState(new StartState(this.getPlayer()));
+        if (this.getPlayer().isHasNextTurn()) {
+            this.changeState(new StartState(this.getPlayer()));
+        } else {
+            this.finishTurn();
+        }
     }
 
     @Override
     public void selectQuestion(Question question) {
         this.getPlayer().getChallanger().setChallangeQuestion(question);
         this.getPlayer().getQuestions().remove(question);
-        if(this.getPlayer().getQuestions().isEmpty()){
+        if (this.getPlayer().getQuestions().isEmpty()) {
             this.getPlayer().setHasToDrawQuestion(true);
         }
     }
 
     @Override
-    public void changeQuestion() {
+    public void changeQuestion() throws PlayerStateWrongException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void invalidateQuestion() {
+    public void invalidateQuestion() throws PlayerStateWrongException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void drawQuestions(List<Question> questions) {
-        this.getPlayer().setQuestions(questions);
+    public void drawQuestions(List<Question> questions) throws PlayerStateWrongException {
+        if (this.getPlayer().isHasToDrawQuestion()) {
+            this.getPlayer().setQuestions(questions);
+        } else {
+            throw new PlayerStateWrongException();
+        }
     }
 
     @Override
@@ -50,12 +61,12 @@ public class WaitingState extends PlayerState{
     }
 
     @Override
-    public void changeAnswerTime() {
+    public void changeAnswerTime() throws PlayerStateWrongException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void discardAnswers() {
+    public void discardAnswers() throws PlayerStateWrongException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
@@ -65,7 +76,7 @@ public class WaitingState extends PlayerState{
     }
 
     @Override
-    public void drawSituation() {
+    public void drawSituation(SituationCard situationCard) {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
@@ -75,23 +86,24 @@ public class WaitingState extends PlayerState{
     }
 
     @Override
-    public void obtainSlot(Slot slot) {
+    public void obtainSlot(Slot slot) throws SlotFullException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void changeSlot(Slot oldSlot, Slot newSlot) {
+    public void changeSlot(Slot oldSlot, Slot newSlot) throws SlotFullException, SlotEmptyException, PlayerStateWrongException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void emptySlot(Slot slot) {
+    public void emptySlot(Slot slot) throws SlotEmptyException, PlayerStateWrongException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
     public void finishTurn() {
-        throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
+        this.changeState(new EndState(this.getPlayer()));
+        this.getPlayer().finishTurn();
     }
-    
+
 }

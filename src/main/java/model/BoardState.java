@@ -1,15 +1,18 @@
 package model;
 
+import exception.PlayerStateWrongException;
 import exception.SituationWrongException;
+import exception.SlotEmptyException;
+import exception.SlotFullException;
 import java.util.List;
 
 /**
  *
  * @author renzobelve
- * 
+ *
  * Clase que representa el estado Board
  */
-public class BoardState extends PlayerState{
+public class BoardState extends PlayerState {
 
     public BoardState(Player player) {
         super(player);
@@ -17,77 +20,94 @@ public class BoardState extends PlayerState{
 
     @Override
     public void playTurn() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
     public void selectQuestion(Question question) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void changeQuestion() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void changeQuestion() throws PlayerStateWrongException {
+        throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void invalidateQuestion() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void invalidateQuestion() throws PlayerStateWrongException {
+        if (this.getPlayer().isIsOffside()) {
+            this.getPlayer().setChallangeQuestion(null);
+            this.getPlayer().getChallanger().setChallanger(null);
+            this.getPlayer().setChallanger(null);
+            this.changeState(new StartState(this.getPlayer()));
+        } else {
+            throw new PlayerStateWrongException();
+        }
     }
 
     @Override
-    public void drawQuestions(List<Question> questions) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void drawQuestions(List<Question> questions) throws PlayerStateWrongException {
+        throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
     public boolean answerQuestion(Answer answer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void changeAnswerTime() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void changeAnswerTime() throws PlayerStateWrongException {
+        throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void discardAnswers() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void discardAnswers() throws PlayerStateWrongException {
+        throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
     public void playSituation(SituationCard situationCard, Player targetPlayer) throws SituationWrongException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        situationCard.executeAction(targetPlayer);
     }
 
     @Override
-    public void drawSituation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void drawSituation(SituationCard situationCard) {
+        this.getPlayer().getSituationCards().add(situationCard);
     }
 
     @Override
     public void selectAsChallanger(Player player) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void obtainSlot(Slot slot) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void obtainSlot(Slot slot) throws SlotFullException {
+        this.getPlayer().getActualGame().getBoard().obtainSlot(this.getPlayer(), slot);
+        this.finishTurn();
     }
 
     @Override
-    public void changeSlot(Slot oldSlot, Slot newSlot) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void changeSlot(Slot oldSlot, Slot newSlot) throws SlotFullException, SlotEmptyException, PlayerStateWrongException {
+        if (this.getPlayer().getCountWarnings() > 0) {
+            this.getPlayer().getActualGame().getBoard().changeSlot(oldSlot, newSlot);
+        } else {
+            throw new PlayerStateWrongException();
+        }
     }
 
     @Override
-    public void emptySlot(Slot slot) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void emptySlot(Slot slot) throws SlotEmptyException, PlayerStateWrongException {
+        if (this.getPlayer().getCountExpulsions() > 0) {
+            this.getPlayer().getActualGame().getBoard().emptySlot(slot);
+        }else{
+            throw new PlayerStateWrongException();
+        }
     }
 
     @Override
     public void finishTurn() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.changeState(new EndState(this.getPlayer()));
+        this.getPlayer().finishTurn();
     }
-    
+
 }

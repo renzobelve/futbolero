@@ -1,6 +1,9 @@
 package model;
 
+import exception.PlayerStateWrongException;
 import exception.SituationWrongException;
+import exception.SlotEmptyException;
+import exception.SlotFullException;
 import java.util.List;
 import java.util.Random;
 
@@ -27,22 +30,26 @@ public class AnswerState extends PlayerState {
     }
 
     @Override
-    public void changeQuestion() {
-        // Determina de forma aleatoria la pregunta para cambiar
-        Random randomNumber = new Random();
-        int randomQuestionNumber = randomNumber.nextInt(this.getPlayer().getChallanger().getQuestions().size());
-        Question questionChange = this.getPlayer().getChallanger().getQuestions().get(randomQuestionNumber);
-        // Se cambia la pregunta actual por la nueva
-        this.getPlayer().getChallanger().selectQuestion(questionChange);
+    public void changeQuestion() throws PlayerStateWrongException {
+        if (this.getPlayer().isHasChange()) {
+            // Determina de forma aleatoria la pregunta para cambiar
+            Random randomNumber = new Random();
+            int randomQuestionNumber = randomNumber.nextInt(this.getPlayer().getChallanger().getQuestions().size());
+            Question questionChange = this.getPlayer().getChallanger().getQuestions().get(randomQuestionNumber);
+            // Se cambia la pregunta actual por la nueva
+            this.getPlayer().getChallanger().selectQuestion(questionChange);
+        } else {
+            throw new PlayerStateWrongException();
+        }
     }
 
     @Override
-    public void invalidateQuestion() {
+    public void invalidateQuestion() throws PlayerStateWrongException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void drawQuestions(List<Question> questions) {
+    public void drawQuestions(List<Question> questions) throws PlayerStateWrongException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
@@ -50,31 +57,49 @@ public class AnswerState extends PlayerState {
     public boolean answerQuestion(Answer answer) {
         boolean result = answer.isIsCorrect();
         // Si la respuesta es correcta puede agregar casillero en el tablero, sino el turno finaliza
-        if(result){
+        if (result) {
             this.changeState(new BoardState(this.getPlayer()));
-        }else{
+        } else {
             this.finishTurn();
         }
         return answer.isIsCorrect();
     }
 
     @Override
-    public void changeAnswerTime() {
-        this.getPlayer().getChallangeQuestion().setAnswerTime(this.getPlayer().getAnswerTime());
+    public void changeAnswerTime() throws PlayerStateWrongException {
+        if (this.getPlayer().getAnswerTime() < Question.QUESTION_TIME) {
+            this.getPlayer().getChallangeQuestion().setAnswerTime(this.getPlayer().getAnswerTime());
+        } else {
+            throw new PlayerStateWrongException();
+        }
     }
 
     @Override
-    public void discardAnswers() {
-        // TO-DO
+    public void discardAnswers() throws PlayerStateWrongException {
+        if (this.getPlayer().getCountAnswers() < Question.QUESTION_ANSWERS) {
+            int answersToDiscount = Question.QUESTION_ANSWERS - this.getPlayer().getCountAnswers();
+            for (int i = 0; i < answersToDiscount; i++) {
+                Random randomNumber = new Random();
+                int randomAnswerNumber = randomNumber.nextInt(this.getPlayer().getChallangeQuestion().getAnswers().size());
+                Answer answer = this.getPlayer().getChallangeQuestion().getAnswers().get(randomAnswerNumber);
+                if (!answer.isIsCorrect()) {
+                    this.getPlayer().getChallangeQuestion().getAnswers().remove(answer);
+                } else {
+                    i--;
+                }
+            }
+        } else {
+            throw new PlayerStateWrongException();
+        }
     }
 
     @Override
     public void playSituation(SituationCard situationCard, Player targetPlayer) throws SituationWrongException {
-        // TO-DO
+        situationCard.executeAction(targetPlayer);
     }
 
     @Override
-    public void drawSituation() {
+    public void drawSituation(SituationCard situationCard) {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
@@ -84,17 +109,17 @@ public class AnswerState extends PlayerState {
     }
 
     @Override
-    public void obtainSlot(Slot slot) {
+    public void obtainSlot(Slot slot) throws SlotFullException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void changeSlot(Slot oldSlot, Slot newSlot) {
+    public void changeSlot(Slot oldSlot, Slot newSlot) throws SlotFullException, SlotEmptyException, PlayerStateWrongException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void emptySlot(Slot slot) {
+    public void emptySlot(Slot slot) throws SlotEmptyException, PlayerStateWrongException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 

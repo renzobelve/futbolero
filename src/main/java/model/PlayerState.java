@@ -1,6 +1,9 @@
 package model;
 
+import exception.PlayerStateWrongException;
 import exception.SituationWrongException;
+import exception.SlotEmptyException;
+import exception.SlotFullException;
 import java.util.List;
 
 /**
@@ -12,9 +15,9 @@ import java.util.List;
 public abstract class PlayerState {
 
     private Player player;
-    
+
     // Constructors ----------------------------
-    public PlayerState(Player player){
+    public PlayerState(Player player) {
         this.player = player;
     }
 
@@ -36,13 +39,13 @@ public abstract class PlayerState {
     // Methods ----------------------------
     /**
      * @param state
-     * 
+     *
      * Metodo que cambia de estado a un Jugador
      */
     public void changeState(PlayerState state) {
         this.getPlayer().setState(state);
     }
-    
+
     /**
      * Metodo que inicia el turno del Jugador
      */
@@ -57,24 +60,29 @@ public abstract class PlayerState {
     public abstract void selectQuestion(Question question);
 
     /**
+     * @throws exception.PlayerStateWrongException
+     *
      * Metodo que cambia la pregunta actual del jugador por otra de forma
      * aleatoria
      */
-    public abstract void changeQuestion();
+    public abstract void changeQuestion() throws PlayerStateWrongException;
 
     /**
+     * @throws exception.PlayerStateWrongException
+     *
      * Metodo que invalida la pregunta actual y vuelve a iniciar el turno del
      * jugador
      */
-    public abstract void invalidateQuestion();
+    public abstract void invalidateQuestion() throws PlayerStateWrongException;
 
     /**
      * @param questions
-     * 
+     * @throws exception.PlayerStateWrongException
+     *
      * Metodo que incorpora nuevas preguntas al terminarse el pool de preguntas
      * disponibles
      */
-    public abstract void drawQuestions(List<Question> questions);
+    public abstract void drawQuestions(List<Question> questions) throws PlayerStateWrongException;
 
     /**
      * @param answer
@@ -86,16 +94,18 @@ public abstract class PlayerState {
     public abstract boolean answerQuestion(Answer answer);
 
     /**
+     * @throws exception.PlayerStateWrongException
      *
      * Metodo que cambia la cantidad de tiempo disponible para una respuesta
      */
-    public abstract void changeAnswerTime();
+    public abstract void changeAnswerTime() throws PlayerStateWrongException;
 
     /**
+     * @throws exception.PlayerStateWrongException
      *
      * Metodo que descarta posibles respuestas falsas
      */
-    public abstract void discardAnswers();
+    public abstract void discardAnswers() throws PlayerStateWrongException;
 
     /**
      * @param situationCard
@@ -107,10 +117,12 @@ public abstract class PlayerState {
     public abstract void playSituation(SituationCard situationCard, Player targetPlayer) throws SituationWrongException;
 
     /**
+     * @param situationCard
+     *
      * Metodo que incorpora una nueva situavion al pool de situaciones
      * disponibles
      */
-    public abstract void drawSituation();
+    public abstract void drawSituation(SituationCard situationCard);
 
     /**
      * @param player
@@ -121,32 +133,39 @@ public abstract class PlayerState {
 
     /**
      * @param slot
+     * @throws exception.SlotFullException
      *
      * Metodo que selecciona un casillero del tablero y lo asigna al jugador
+     *
      */
-    public abstract void obtainSlot(Slot slot);
+    public abstract void obtainSlot(Slot slot) throws SlotFullException;
 
     /**
      * @param oldSlot
      * @param newSlot
+     * @throws exception.SlotFullException
+     * @throws exception.SlotEmptyException
+     * @throws exception.PlayerStateWrongException
      *
      * Metodo que cambia la posicion de un casillero a otro vacio para el
      * jugador
+
      */
-    public abstract void changeSlot(Slot oldSlot, Slot newSlot);
+    public abstract void changeSlot(Slot oldSlot, Slot newSlot) throws SlotFullException, SlotEmptyException, PlayerStateWrongException;
 
     /**
      * @param slot
-     *
+     * @throws exception.SlotEmptyException
+     * @throws exception.PlayerStateWrongException
+     * 
      * Metodo que deja vacio un slot
      */
-    public abstract void emptySlot(Slot slot);
+    public abstract void emptySlot(Slot slot) throws SlotEmptyException, PlayerStateWrongException;
 
     /**
      *
      * Metodo que finaliza el turno del jugador
      */
     public abstract void finishTurn();
-    
 
 }

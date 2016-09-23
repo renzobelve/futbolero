@@ -1,6 +1,9 @@
 package model;
 
+import exception.PlayerStateWrongException;
 import exception.SituationWrongException;
+import exception.SlotEmptyException;
+import exception.SlotFullException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -314,7 +317,7 @@ class Player {
      * Metodo que cambia la pregunta actual del jugador por otra de forma
      * aleatoria
      */
-    public void changeQuestion() {
+    public void changeQuestion() throws PlayerStateWrongException {
         this.getState().changeQuestion();
     }
 
@@ -322,7 +325,7 @@ class Player {
      * Metodo que invalida la pregunta actual y vuelve a iniciar el turno del
      * jugador
      */
-    public void invalidateQuestion() {
+    public void invalidateQuestion() throws PlayerStateWrongException {
         this.getState().invalidateQuestion();
     }
 
@@ -330,7 +333,7 @@ class Player {
      * Metodo que incorpora nuevas preguntas al terminarse el pool de preguntas
      * disponibles
      */
-    public void drawQuestions(List<Question> questions) {
+    public void drawQuestions(List<Question> questions) throws PlayerStateWrongException {
         this.getState().drawQuestions(questions);
     }
 
@@ -350,7 +353,7 @@ class Player {
      *
      * Metodo que cambia la cantidad de tiempo disponible para una respuesta
      */
-    public void changeAnswerTime() {
+    public void changeAnswerTime() throws PlayerStateWrongException {
         this.getState().changeAnswerTime();
     }
 
@@ -359,7 +362,7 @@ class Player {
      *
      * Metodo que descarta posibles respuestas falsas
      */
-    public void discardAnswers() {
+    public void discardAnswers() throws PlayerStateWrongException {
         this.getState().discardAnswers();
     }
 
@@ -378,8 +381,8 @@ class Player {
      * Metodo que incorpora una nueva situavion al pool de situaciones
      * disponibles
      */
-    public void drawSituation() {
-        this.getState().drawSituation();
+    public void drawSituation(SituationCard situationCard) {
+        this.getState().drawSituation(situationCard);
     }
 
     /**
@@ -396,7 +399,7 @@ class Player {
      *
      * Metodo que selecciona un casillero del tablero y lo asigna al jugador
      */
-    public void obtainSlot(Slot slot) {
+    public void obtainSlot(Slot slot) throws SlotFullException {
         this.getState().obtainSlot(slot);
     }
 
@@ -407,7 +410,7 @@ class Player {
      * Metodo que cambia la posicion de un casillero a otro vacio para el
      * jugador
      */
-    public void changeSlot(Slot oldSlot, Slot newSlot) {
+    public void changeSlot(Slot oldSlot, Slot newSlot) throws SlotFullException, SlotEmptyException, PlayerStateWrongException {
         this.getState().changeSlot(oldSlot, newSlot);
     }
 
@@ -416,7 +419,7 @@ class Player {
      *
      * Metodo que deja vacio un slot
      */
-    public void emptySlot(Slot slot) {
+    public void emptySlot(Slot slot) throws SlotEmptyException, PlayerStateWrongException {
         this.getState().emptySlot(slot);
     }
 

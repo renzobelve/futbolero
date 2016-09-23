@@ -1,6 +1,9 @@
 package model;
 
+import exception.PlayerStateWrongException;
 import exception.SituationWrongException;
+import exception.SlotEmptyException;
+import exception.SlotFullException;
 import java.util.List;
 
 /**
@@ -26,17 +29,17 @@ public class StartState extends PlayerState {
     }
 
     @Override
-    public void changeQuestion() {
+    public void changeQuestion() throws PlayerStateWrongException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void invalidateQuestion() {
+    public void invalidateQuestion() throws PlayerStateWrongException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void drawQuestions(List<Question> questions) {
+    public void drawQuestions(List<Question> questions) throws PlayerStateWrongException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
@@ -46,12 +49,12 @@ public class StartState extends PlayerState {
     }
 
     @Override
-    public void changeAnswerTime() {
+    public void changeAnswerTime() throws PlayerStateWrongException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void discardAnswers() {
+    public void discardAnswers() throws PlayerStateWrongException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
@@ -61,7 +64,7 @@ public class StartState extends PlayerState {
     }
 
     @Override
-    public void drawSituation() {
+    public void drawSituation(SituationCard situationCard) {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
@@ -73,17 +76,17 @@ public class StartState extends PlayerState {
     }
 
     @Override
-    public void obtainSlot(Slot slot) {
+    public void obtainSlot(Slot slot) throws SlotFullException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void changeSlot(Slot oldSlot, Slot newSlot) {
+    public void changeSlot(Slot oldSlot, Slot newSlot) throws SlotFullException, SlotEmptyException, PlayerStateWrongException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void emptySlot(Slot slot) {
+    public void emptySlot(Slot slot) throws SlotEmptyException, PlayerStateWrongException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
