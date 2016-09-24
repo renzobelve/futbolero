@@ -37,13 +37,10 @@
         <plugins>
 
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.3</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
                 <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <finalName>futbolero-core-DEV</finalName>
                     <archive>
                         <manifest>
                             <mainClass>model.HelloWorld</mainClass>
@@ -53,5 +50,6 @@
             </plugin>
             
         </plugins>
+        
     </build>
 </project>
