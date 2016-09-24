@@ -2,6 +2,11 @@ package model;
 
 import exception.QuestionMalformedException;
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
 /**
  *
@@ -9,16 +14,27 @@ import java.util.List;
  *
  * Clase que representa una Pregunta para los juegos
  */
+@Entity
 public class Question {
-
     public static final int QUESTION_TIME = 20;
     public static final int QUESTION_ANSWERS = 4;
+    
+    @Id
+    @GeneratedValue
+    private Long id;
 
+    @Column(nullable = false)
     private String question;
+    
+    @Column(nullable = false)
     private int answerTime;
+    
+    @Transient
     private List<Answer> answers;
 
     // Constructors ----------------------------
+    protected Question(){}
+    
     public Question(String question, List<Answer> answers) throws QuestionMalformedException {
         this.question = question;
         this.answerTime = Question.QUESTION_TIME;
@@ -43,6 +59,20 @@ public class Question {
     }
 
     // Getters & Setters ----------------------------
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     /**
      * @return the question
      */
