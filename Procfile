@@ -1,1 +1,1 @@
-worker: java -jar target/futbolero-core-DEV.jar
+web: java -jar target/futbolero-core-DEV.jar
