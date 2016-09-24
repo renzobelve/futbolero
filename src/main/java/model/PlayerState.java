@@ -5,6 +5,12 @@ import exception.SituationWrongException;
 import exception.SlotEmptyException;
 import exception.SlotFullException;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -12,16 +18,39 @@ import java.util.List;
  *
  * Clase abstracta que representa el estado de un Jugador
  */
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class PlayerState {
 
+    @Id
+    @GeneratedValue
+    private Long id;
+    
+    @OneToOne
     private Player player;
 
     // Constructors ----------------------------
+    protected PlayerState(){}
+    
     public PlayerState(Player player) {
         this.player = player;
     }
 
     // Getters & Setters ----------------------------
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     /**
      * @return the player
      */

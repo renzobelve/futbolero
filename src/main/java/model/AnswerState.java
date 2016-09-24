@@ -6,6 +6,7 @@ import exception.SlotEmptyException;
 import exception.SlotFullException;
 import java.util.List;
 import java.util.Random;
+import javax.persistence.Entity;
 
 /**
  *
@@ -13,7 +14,11 @@ import java.util.Random;
  *
  * Clase que representa el estado de Answer
  */
+@Entity
 public class AnswerState extends PlayerState {
+
+    protected AnswerState() {
+    }
 
     public AnswerState(Player player) {
         super(player);

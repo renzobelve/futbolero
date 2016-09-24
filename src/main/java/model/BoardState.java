@@ -5,6 +5,7 @@ import exception.SituationWrongException;
 import exception.SlotEmptyException;
 import exception.SlotFullException;
 import java.util.List;
+import javax.persistence.Entity;
 
 /**
  *
@@ -12,8 +13,11 @@ import java.util.List;
  *
  * Clase que representa el estado Board
  */
+@Entity
 public class BoardState extends PlayerState {
 
+    protected BoardState(){}
+    
     public BoardState(Player player) {
         super(player);
     }

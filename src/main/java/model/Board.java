@@ -4,6 +4,13 @@ import exception.SlotEmptyException;
 import exception.SlotFullException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 /**
  *
@@ -11,13 +18,25 @@ import java.util.List;
  *
  * Clase que representa un Tablero de Juego
  */
+@Entity
 class Board {
+    
+    @Id
+    @GeneratedValue
+    private Long id;
 
+    @Column(nullable = false)
     private int height;
+    
+    @Column(nullable = false)
     private int width;
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "board")
     private List<Slot> slots;
 
     // Constructors ----------------------------
+    protected Board(){}
+    
     public Board(int height, int width) {
         this.height = height;
         this.width = width;
@@ -31,6 +50,19 @@ class Board {
     }
 
     // Getters & Setters ----------------------------
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
     /**
      * @return the height
      */

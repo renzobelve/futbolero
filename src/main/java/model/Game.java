@@ -5,6 +5,13 @@ import exception.GameFullException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -12,19 +19,38 @@ import java.util.Random;
  *
  * Clase que representa un Juego dentro de Futbolero
  */
+@Entity
 public class Game {
 
     public static final int GAME_SIZE = 5;
     public static final int LINE_SIZE = 4;
 
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(nullable = false)
     private String type;
+    
+    @Column(nullable = false)
     private int playerAmount;
+    
+    @OneToOne
     private Board board;
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "actualGame")
     private List<Player> players;
+    
+    @OneToOne
     private Player activePlayer;
+    
+    @Column(nullable = false)
     private int activePlayerNumber;
 
     // Constructors ----------------------------
+    protected Game() {
+    }
+
     public Game(int playerAmount) {
         this.type = "NORMAL";
         this.playerAmount = playerAmount;
@@ -33,6 +59,14 @@ public class Game {
     }
 
     // Getters & Setters ----------------------------
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     /**
      * @return the type
      */
@@ -173,7 +207,7 @@ public class Game {
                     winner = player;
                 }
             }
-            
+
         }
         //TO-DO caso que aun siga en empate
         return winner;

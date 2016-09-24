@@ -5,6 +5,7 @@ import exception.SituationWrongException;
 import exception.SlotEmptyException;
 import exception.SlotFullException;
 import java.util.List;
+import javax.persistence.Entity;
 
 /**
  *
@@ -12,8 +13,11 @@ import java.util.List;
  *
  * Clase que representa el estado de Waiting
  */
+@Entity
 public class WaitingState extends PlayerState {
 
+    protected WaitingState(){}
+    
     public WaitingState(Player player) {
         super(player);
     }

@@ -16,3 +16,7 @@ hs_err_pid*
 
 #OSX
 .DS_Store
+
+#Netbeans
+nb-configuration.xml
+nbactions.xml

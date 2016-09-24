@@ -1,24 +1,57 @@
 package model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 /**
  *
  * @author renzobelve
- * 
+ *
  * Clase que representa una Respuesta para una Pregunta
  */
+@Entity
 public class Answer {
-    
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(nullable = false)
     private String answer;
+
+    @Column(nullable = false)
     private boolean isCorrect;
-    
+
+    @ManyToOne
+    private Question question;
+
     // Constructors ----------------------------
-    public Answer(String answer, boolean isCorrect){
+    protected Answer() {
+    }
+
+    public Answer(String answer, boolean isCorrect) {
         this.answer = answer;
         this.isCorrect = isCorrect;
     }
-    
 
     // Getters & Setters ----------------------------
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     /**
      * @return the answer
      */
@@ -46,5 +79,19 @@ public class Answer {
     public void setIsCorrect(boolean isCorrect) {
         this.isCorrect = isCorrect;
     }
-    
+
+    /**
+     * @return the question
+     */
+    public Question getQuestion() {
+        return question;
+    }
+
+    /**
+     * @param question the question to set
+     */
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
 }

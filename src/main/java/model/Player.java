@@ -6,6 +6,16 @@ import exception.SlotEmptyException;
 import exception.SlotFullException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 /**
  *
@@ -13,29 +23,66 @@ import java.util.List;
  *
  * Clase que representa un Jugador
  */
+@Entity
 class Player {
 
+    @Id
+    @GeneratedValue
+    private Long id;
+    
     // Variables de instancia generales
+    @Column(nullable = false)
     private String name;
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
     private List<Slot> slots;
+    
+    @ManyToOne
     private Game actualGame;
+    
+    @ManyToMany
     private List<Question> questions;
+    
+    @ManyToOne
     private Question challengeQuestion;
+    
+    @ManyToOne
     private Player challenger;
+    
+    @ManyToMany
     private List<SituationCard> situationCards;
+    
+    @OneToOne
     private PlayerState state;
 
     // Variables de instancia de estado
+    @Column(nullable = false)
     private int countWarnings;
+    
+    @Column(nullable = false)
     private int countExpulsions;
+    
+    @Column(nullable = false)
     private boolean isOffside;
+    
+    @Column(nullable = false)
     private boolean hasChange;
+    
+    @Column(nullable = false)
     private int countAnswers;
+    
+    @Column(nullable = false)
     private int answerTime;
+    
+    @Column(nullable = false)
     private boolean hasNextTurn;
+    
+    @Column(nullable = false)
     private boolean hasToDrawQuestion;
 
     // Constructors ----------------------------
+    protected Player(){}
+    
     public Player(String name) {
         this.name = name;
         this.slots = new ArrayList<>();
@@ -56,6 +103,19 @@ class Player {
     }
 
     // Getters & Setters ----------------------------
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
     /**
      * @return the name
      */

@@ -5,6 +5,7 @@ import exception.SituationWrongException;
 import exception.SlotEmptyException;
 import exception.SlotFullException;
 import java.util.List;
+import javax.persistence.Entity;
 
 /**
  *
@@ -12,7 +13,11 @@ import java.util.List;
  *
  * Clase que representa el estado de Start
  */
+@Entity
 public class StartState extends PlayerState {
+
+    protected StartState() {
+    }
 
     public StartState(Player player) {
         super(player);

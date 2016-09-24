@@ -1,6 +1,11 @@
 package model;
 
 import exception.SituationWrongException;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
 /**
  *
@@ -8,19 +13,45 @@ import exception.SituationWrongException;
  *
  * Clase que representa una tarjeta de Situacion
  */
+@Entity
 class SituationCard {
 
+    @Id
+    @GeneratedValue
+    private Long id;
+    
+    @Column(nullable = false)
     private String name;
+    
+    @Column(nullable = false)
     private String description;
+    
+    @Transient
     private SituationCardStrategy strategy;
 
     // Constructors ----------------------------
+    protected SituationCard(){}
+    
     public SituationCard(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
     // Getters & Setters ----------------------------
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     /**
      * @return the name
      */

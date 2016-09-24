@@ -4,8 +4,10 @@ import exception.QuestionMalformedException;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 /**
@@ -29,7 +31,7 @@ public class Question {
     @Column(nullable = false)
     private int answerTime;
     
-    @Transient
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
     private List<Answer> answers;
 
     // Constructors ----------------------------

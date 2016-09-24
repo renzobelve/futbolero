@@ -5,6 +5,7 @@ import exception.SituationWrongException;
 import exception.SlotEmptyException;
 import exception.SlotFullException;
 import java.util.List;
+import javax.persistence.Entity;
 
 /**
  *
@@ -12,8 +13,11 @@ import java.util.List;
  *
  * Clase que representa el estado End
  */
+@Entity
 public class EndState extends PlayerState {
 
+    protected EndState(){}
+    
     public EndState(Player player) {
         super(player);
     }
