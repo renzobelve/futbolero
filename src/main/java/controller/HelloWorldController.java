@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
  * RestController HelloWorld
  */
 @RestController
-@RequestMapping("/hello")
+@RequestMapping("/")
 public class HelloWorldController {
 
-    @RequestMapping("/greeting")
+    @RequestMapping("/")
     public String greeting() {
         return "Hello World Futbolero!";
     }
