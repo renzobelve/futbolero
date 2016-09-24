@@ -1,1 +1,1 @@
-web: java -jar target/futbolero-core-DEV.jar
+web: java $JAVA_OPTS -Dserver.port=$PORT -jar target/futbolero-core-DEV.jar
