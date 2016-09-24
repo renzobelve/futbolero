@@ -46,7 +46,7 @@
                     <finalName>futbolero-core-DEV</finalName>
                     <archive>
                         <manifest>
-                            <mainClass>HelloWorld</mainClass>
+                            <mainClass>model.HelloWorld</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
