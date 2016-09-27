@@ -4,6 +4,7 @@ import exception.SlotEmptyException;
 import exception.SlotFullException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,7 +20,7 @@ import javax.persistence.Transient;
  * Clase que representa un Tablero de Juego
  */
 @Entity
-class Board {
+public class Board {
     
     @Id
     @GeneratedValue
@@ -31,7 +32,7 @@ class Board {
     @Column(nullable = false)
     private int width;
     
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "board")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "board",  cascade = CascadeType.ALL)
     private List<Slot> slots;
 
     // Constructors ----------------------------
@@ -109,6 +110,7 @@ class Board {
      * @param slot the slot to add
      */
     private void addSlot(Slot slot) {
+        slot.setBoard(this);
         this.getSlots().add(slot);
     }
 

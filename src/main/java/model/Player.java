@@ -6,16 +6,17 @@ import exception.SlotEmptyException;
 import exception.SlotFullException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Transient;
 
 /**
  *
@@ -24,10 +25,10 @@ import javax.persistence.Transient;
  * Clase que representa un Jugador
  */
 @Entity
-class Player {
+public class Player {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
     // Variables de instancia generales
@@ -52,7 +53,7 @@ class Player {
     @ManyToMany
     private List<SituationCard> situationCards;
     
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private PlayerState state;
 
     // Variables de instancia de estado

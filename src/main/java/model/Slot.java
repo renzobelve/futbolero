@@ -3,6 +3,7 @@ package model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -13,10 +14,10 @@ import javax.persistence.ManyToOne;
  * Clase que representa un Casillero en el Tablero
  */
 @Entity
-class Slot {
+public class Slot {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false)
@@ -29,7 +30,7 @@ class Slot {
     private Player owner;
 
     @ManyToOne
-    private Player board;
+    private Board board;
 
     // Constructors ----------------------------
     protected Slot() {
@@ -101,14 +102,14 @@ class Slot {
     /**
      * @return the board
      */
-    public Player getBoard() {
+    public Board getBoard() {
         return board;
     }
 
     /**
      * @param board the board to set
      */
-    public void setBoard(Player board) {
+    public void setBoard(Board board) {
         this.board = board;
     }
 

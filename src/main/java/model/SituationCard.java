@@ -4,6 +4,7 @@ import exception.SituationWrongException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
@@ -14,24 +15,25 @@ import javax.persistence.Transient;
  * Clase que representa una tarjeta de Situacion
  */
 @Entity
-class SituationCard {
+public class SituationCard {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @Column(nullable = false)
     private String name;
-    
+
     @Column(nullable = false)
     private String description;
-    
+
     @Transient
     private SituationCardStrategy strategy;
 
     // Constructors ----------------------------
-    protected SituationCard(){}
-    
+    protected SituationCard() {
+    }
+
     public SituationCard(String name, String description) {
         this.name = name;
         this.description = description;
@@ -51,7 +53,7 @@ class SituationCard {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     /**
      * @return the name
      */
@@ -93,71 +95,72 @@ class SituationCard {
     public void setStrategy(SituationCardStrategy strategy) {
         this.strategy = strategy;
     }
-    
+
     // Methods ----------------------------
-    
     /**
+     * @param targetPlayer
+     * @throws exception.SituationWrongException
+     *
      * Metodo que ejecuta la accion de la estrategia
      */
     public void executeAction(Player targetPlayer) throws SituationWrongException {
         this.getStrategy().executeAction(targetPlayer);
     }
-    
-    
+
     /**
      * Metodo que setea la estrategia de Amonestacion
      */
     public void setWarningStrategy() {
         this.setStrategy(new WarningStrategy());
     }
-    
+
     /**
      * Metodo que setea la estrategia de Expulsion
      */
     public void setExpulsionStrategy() {
         this.setStrategy(new ExpulsionStrategy());
     }
-    
+
     /**
      * Metodo que setea la estrategia de Offside
      */
     public void setOffsideStrategy() {
         this.setStrategy(new OffsideStrategy());
     }
-    
+
     /**
      * Metodo que setea la estrategia de Cambio
      */
     public void setChangeStrategy() {
         this.setStrategy(new ChangeStrategy());
     }
-    
+
     /**
      * Metodo que setea la estrategia de Tiro Libre
      */
     public void setFreeKickStrategy() {
         this.setStrategy(new FreeKickStrategy());
     }
-    
+
     /**
      * Metodo que setea la estrategia de Penal
      */
     public void setPenaltyStrategy() {
         this.setStrategy(new PenaltyStrategy());
     }
-    
+
     /**
      * Metodo que setea la estrategia de Lesion
      */
     public void setInjuryStrategy() {
         this.setStrategy(new InjuryStrategy());
     }
-    
+
     /**
      * Metodo que setea la estrategia de Tiempo de Descuento
      */
     public void setTimeOffStrategy() {
         this.setStrategy(new TimeOffStrategy());
     }
-    
+
 }

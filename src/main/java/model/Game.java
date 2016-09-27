@@ -5,10 +5,12 @@ import exception.GameFullException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -26,7 +28,7 @@ public class Game {
     public static final int LINE_SIZE = 4;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false)
@@ -35,10 +37,10 @@ public class Game {
     @Column(nullable = false)
     private int playerAmount;
     
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Board board;
     
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "actualGame")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "actualGame")
     private List<Player> players;
     
     @OneToOne
