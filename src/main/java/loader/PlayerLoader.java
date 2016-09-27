@@ -31,17 +31,8 @@ public class PlayerLoader implements ApplicationListener<ContextRefreshedEvent>{
     @Override
     public void onApplicationEvent(ContextRefreshedEvent e) {
         
-        Player player1 = new Player("Jugador 1");
-        Game game = this.gameRepository.findOne((long) 1);
-        
-        try {
-            game.addPlayer(player1);
-        } catch (GameFullException | GameEmptyException ex) {
-            Logger.getLogger(PlayerLoader.class.getName()).log(Level.SEVERE, ex.getMessage());
-        }
-        
+        Player player1 = new Player("Jugador 1"); 
         this.playerRepository.save(player1);
-        this.gameRepository.save(game);
         
     }
 }
