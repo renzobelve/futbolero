@@ -30,60 +30,61 @@ public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     // Variables de instancia generales
     @Column(nullable = false)
     private String name;
-    
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
     private List<Slot> slots;
-    
+
     @ManyToOne
     private Game actualGame;
-    
+
     @ManyToMany
     private List<Question> questions;
-    
+
     @ManyToOne
     private Question challengeQuestion;
-    
+
     @ManyToOne
     private Player challenger;
-    
+
     @ManyToMany
     private List<SituationCard> situationCards;
-    
+
     @OneToOne(cascade = CascadeType.ALL)
     private PlayerState state;
 
     // Variables de instancia de estado
     @Column(nullable = false)
     private int countWarnings;
-    
+
     @Column(nullable = false)
     private int countExpulsions;
-    
+
     @Column(nullable = false)
     private boolean isOffside;
-    
+
     @Column(nullable = false)
     private boolean hasChange;
-    
+
     @Column(nullable = false)
     private int countAnswers;
-    
+
     @Column(nullable = false)
     private int answerTime;
-    
+
     @Column(nullable = false)
     private boolean hasNextTurn;
-    
+
     @Column(nullable = false)
     private boolean hasToDrawQuestion;
 
     // Constructors ----------------------------
-    protected Player(){}
-    
+    protected Player() {
+    }
+
     public Player(String name) {
         this.name = name;
         this.slots = new ArrayList<>();
@@ -117,6 +118,7 @@ public class Player {
     public void setId(Long id) {
         this.id = id;
     }
+
     /**
      * @return the name
      */
@@ -365,16 +367,17 @@ public class Player {
 
     /**
      * @param question
-     * @param player
      *
      * Metodo que selecciona una pregunta disponible y la setea como
- challengeQuestion del jugador retado
+     * challengeQuestion del jugador retado
      */
     public void selectQuestion(Question question) {
         this.getState().selectQuestion(question);
     }
 
     /**
+     * @throws exception.PlayerStateWrongException
+     *
      * Metodo que cambia la pregunta actual del jugador por otra de forma
      * aleatoria
      */
@@ -383,6 +386,8 @@ public class Player {
     }
 
     /**
+     * @throws exception.PlayerStateWrongException
+     *
      * Metodo que invalida la pregunta actual y vuelve a iniciar el turno del
      * jugador
      */
@@ -391,6 +396,9 @@ public class Player {
     }
 
     /**
+     * @param questions
+     * @throws exception.PlayerStateWrongException
+     *
      * Metodo que incorpora nuevas preguntas al terminarse el pool de preguntas
      * disponibles
      */
@@ -410,7 +418,7 @@ public class Player {
     }
 
     /**
-     * @param time
+     * @throws exception.PlayerStateWrongException
      *
      * Metodo que cambia la cantidad de tiempo disponible para una respuesta
      */
@@ -419,7 +427,7 @@ public class Player {
     }
 
     /**
-     * @param countDiscard
+     * @throws exception.PlayerStateWrongException
      *
      * Metodo que descarta posibles respuestas falsas
      */
@@ -439,6 +447,8 @@ public class Player {
     }
 
     /**
+     * @param situationCard
+     * 
      * Metodo que incorpora una nueva situavion al pool de situaciones
      * disponibles
      */
@@ -457,6 +467,7 @@ public class Player {
 
     /**
      * @param slot
+     * @throws exception.SlotFullException
      *
      * Metodo que selecciona un casillero del tablero y lo asigna al jugador
      */
@@ -467,7 +478,10 @@ public class Player {
     /**
      * @param oldSlot
      * @param newSlot
-     *
+     * @throws exception.SlotFullException
+     * @throws exception.SlotEmptyException
+     * @throws exception.PlayerStateWrongException
+     * 
      * Metodo que cambia la posicion de un casillero a otro vacio para el
      * jugador
      */
@@ -477,6 +491,8 @@ public class Player {
 
     /**
      * @param slot
+     * @throws exception.SlotEmptyException
+     * @throws exception.PlayerStateWrongException
      *
      * Metodo que deja vacio un slot
      */

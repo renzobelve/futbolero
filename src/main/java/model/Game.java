@@ -2,6 +2,7 @@ package model;
 
 import exception.GameEmptyException;
 import exception.GameFullException;
+import exception.PlayerInGameException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -33,19 +34,19 @@ public class Game {
 
     @Column(nullable = false)
     private String type;
-    
+
     @Column(nullable = false)
     private int playerAmount;
-    
+
     @OneToOne(cascade = CascadeType.ALL)
     private Board board;
-    
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Player> players;
-    
+
     @OneToOne
     private Player activePlayer;
-    
+
     @Column(nullable = false)
     private int activePlayerNumber;
 
@@ -129,25 +130,28 @@ public class Game {
      * @param player the player to add
      * @throws exception.GameFullException
      * @throws exception.GameEmptyException
-     *
+     * @throws exception.PlayerInGameException
+     * 
      * Metodo que agrega un Jugador al Juego
-     *
      */
-    public void addPlayer(Player player) throws GameFullException, GameEmptyException {
+    public void addPlayer(Player player) throws GameFullException, GameEmptyException, PlayerInGameException {
+        // Agrega un Jugador al jugador al Juego si aun no fue agregado
+        if (!this.getPlayers().contains(player)) {
+            // Agrega un Jugador al jugador al Juego si no esta lleno
+            if (this.getPlayerAmount() > this.getPlayers().size()) {
+                this.getPlayers().add(player);
+                player.setActualGame(this);
 
-        // Agrega un Jugador al jugador al Juego si no esta lleno
-        if (this.getPlayerAmount() > this.getPlayers().size()) {
-            this.getPlayers().add(player);
-            player.setActualGame(this);
-
-            // Inicia el Juego si ya esta lleno
-            if (this.getPlayerAmount() == this.getPlayers().size()) {
-                this.startGame();
+                // Inicia el Juego si ya esta lleno
+                if (this.getPlayerAmount() == this.getPlayers().size()) {
+                    this.startGame();
+                }
+            } else {
+                throw new GameFullException();
             }
         } else {
-            throw new GameFullException();
+            throw new PlayerInGameException();
         }
-
     }
 
     /**

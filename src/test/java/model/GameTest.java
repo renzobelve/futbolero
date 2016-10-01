@@ -2,6 +2,7 @@ package model;
 
 import exception.GameEmptyException;
 import exception.GameFullException;
+import exception.PlayerInGameException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Assert;
@@ -30,7 +31,7 @@ public class GameTest {
             Assert.assertEquals(2, this.fourPlayerGame.getPlayers().size());
             Assert.assertNotNull(player1.getActualGame());
             Assert.assertNotNull(player2.getActualGame());
-        } catch (GameFullException | GameEmptyException ex) {
+        } catch (GameFullException | GameEmptyException | PlayerInGameException ex) {
             Assert.fail(ex.getMessage());
             Logger.getLogger(GameTest.class.getName()).log(Level.SEVERE, ex.getMessage());
         }
@@ -42,7 +43,7 @@ public class GameTest {
         try {
             this.fourPlayerGame.addPlayer(new Player("Jugador 3"));
             this.fourPlayerGame.addPlayer(new Player("Jugador 4"));
-        } catch (GameFullException | GameEmptyException ex) {
+        } catch (GameFullException | GameEmptyException | PlayerInGameException ex) {
             Assert.fail(ex.getMessage());
             Logger.getLogger(GameTest.class.getName()).log(Level.SEVERE, ex.getMessage());
         }
@@ -54,14 +55,14 @@ public class GameTest {
     }
     
     @Test
-    public void testAddNextPlayerTurn() {
+    public void testNextPlayerTurn() {
         try {
             this.fourPlayerGame.addPlayer(new Player("Jugador 3"));
             this.fourPlayerGame.addPlayer(new Player("Jugador 4"));
             
             this.fourPlayerGame.nextPlayerTurn();
             this.fourPlayerGame.nextPlayerTurn();
-        } catch (GameFullException | GameEmptyException ex) {
+        } catch (GameFullException | GameEmptyException | PlayerInGameException ex) {
             Assert.fail(ex.getMessage());
             Logger.getLogger(GameTest.class.getName()).log(Level.SEVERE, ex.getMessage());
         }

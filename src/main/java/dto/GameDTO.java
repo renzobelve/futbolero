@@ -13,7 +13,7 @@ public class GameDTO {
     private Long id;
     private int playerAmount;
     private List<PlayerDTO> players;
-    private PlayerDTO creator;
+    private PlayerDTO activePlayer;
 
     /**
      * @return the playerAmount
@@ -58,17 +58,16 @@ public class GameDTO {
     }
 
     /**
-     * @return the creator
+     * @return the activePlayer
      */
-    public PlayerDTO getCreator() {
-        return creator;
+    public PlayerDTO getActivePlayer() {
+        return activePlayer;
     }
 
     /**
-     * @param creator the creator to set
+     * @param activePlayer the activePlayer to set
      */
-    public void setCreator(PlayerDTO creator) {
-        this.creator = creator;
+    public void setActivePlayer(PlayerDTO activePlayer) {
+        this.activePlayer = activePlayer;
     }
-    
 }
