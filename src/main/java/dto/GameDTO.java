@@ -14,6 +14,8 @@ public class GameDTO {
     private int playerAmount;
     private List<PlayerDTO> players;
     private PlayerDTO activePlayer;
+    private PlayerDTO winner;
+    private boolean isOpen;
 
     /**
      * @return the playerAmount
@@ -69,5 +71,33 @@ public class GameDTO {
      */
     public void setActivePlayer(PlayerDTO activePlayer) {
         this.activePlayer = activePlayer;
+    }
+
+    /**
+     * @return the winner
+     */
+    public PlayerDTO getWinner() {
+        return winner;
+    }
+
+    /**
+     * @param winner the winner to set
+     */
+    public void setWinner(PlayerDTO winner) {
+        this.winner = winner;
+    }
+
+    /**
+     * @return the isOpen
+     */
+    public boolean isIsOpen() {
+        return isOpen;
+    }
+
+    /**
+     * @param isOpen the isOpen to set
+     */
+    public void setIsOpen(boolean isOpen) {
+        this.isOpen = isOpen;
     }
 }

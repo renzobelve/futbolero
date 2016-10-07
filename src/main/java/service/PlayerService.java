@@ -21,15 +21,15 @@ public class PlayerService {
     private PlayerRepository playerRepository;
 
     /**
-     * @param playerDTO
+     * @param id
      * @return playerDTO
      * @throws exception.PlayerNullException
      *
      * Metodo para la recuperacion de un player
      */
-    public PlayerDTO findOneById(PlayerDTO playerDTO) throws PlayerNullException {
+    public PlayerDTO findOneById(Long id) throws PlayerNullException {
         // Se busca el player
-        Player player = this.playerRepository.findOne(playerDTO.getId());
+        Player player = this.playerRepository.findOne(id);
         // Si el player no existe se lanza una excepcion
         if (player == null) {
             throw new PlayerNullException();
@@ -45,14 +45,17 @@ public class PlayerService {
      *
      * Metodo para la creacion de un PlayerDTO a traves de un objeto Player
      */
-    public PlayerDTO convertToPlayerDTO(Player player) {
+    protected PlayerDTO convertToPlayerDTO(Player player) {
         if (player != null) {
             PlayerDTO playerDTO = new PlayerDTO();
             playerDTO.setId(player.getId());
             playerDTO.setName(player.getName());
-            GameDTO gameDTO = new GameDTO();
-            gameDTO.setId(player.getActualGame().getId());
-            playerDTO.setActualGame(gameDTO);
+            
+            if (player.getActualGame() != null) {
+                GameDTO gameDTO = new GameDTO();
+                gameDTO.setId(player.getActualGame().getId());
+                playerDTO.setActualGame(gameDTO);
+            }
 
             return playerDTO;
         } else {

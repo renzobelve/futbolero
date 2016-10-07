@@ -13,10 +13,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  *
@@ -35,7 +39,8 @@ public class Player {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+    @Fetch(FetchMode.SELECT)
     private List<Slot> slots;
 
     @ManyToOne
@@ -174,7 +179,7 @@ public class Player {
     public void setActualGame(Game actualGame) {
         this.actualGame = actualGame;
     }
-
+    
     /**
      * @return the questions
      */

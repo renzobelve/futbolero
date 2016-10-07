@@ -11,7 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 
 /**
  *
@@ -32,7 +34,8 @@ public class Board {
     @Column(nullable = false)
     private int width;
     
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "board",  cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "board",  cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT)
     private List<Slot> slots;
 
     // Constructors ----------------------------
@@ -221,6 +224,8 @@ public class Board {
     /**
      * @param oldSlot
      * @param newSlot
+     * @throws exception.SlotFullException
+     * @throws exception.SlotEmptyException
      *
      * Metodo que cambia la posicion de un casillero a otro vacio para un
      * Jugador determinado
@@ -238,6 +243,7 @@ public class Board {
 
     /**
      * @param slot
+     * @throws exception.SlotEmptyException
      *
      * Metodo que deja vacio un slot
      */
@@ -252,6 +258,7 @@ public class Board {
     /**
      * @param slot
      * @param player
+     * @throws exception.SlotFullException
      *
      * Metodo que asigna un casillero vacio a un Jugador determinado
      */

@@ -30,6 +30,14 @@ public class PlayerLoader implements ApplicationListener<ContextRefreshedEvent>{
         this.playerRepository.save(player3);
         Player player4 = new Player("Jugador 4"); 
         this.playerRepository.save(player4);
+        Player player5 = new Player("Jugador 5"); 
+        this.playerRepository.save(player5);
+        Player player6 = new Player("Jugador 6"); 
+        this.playerRepository.save(player6);
+        Player player7 = new Player("Jugador 7"); 
+        this.playerRepository.save(player7);
+        Player player8 = new Player("Jugador 8"); 
+        this.playerRepository.save(player8);
         
     }
 }

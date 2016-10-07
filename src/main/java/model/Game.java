@@ -2,7 +2,9 @@ package model;
 
 import exception.GameEmptyException;
 import exception.GameFullException;
+import exception.GameNotFinishedException;
 import exception.PlayerInGameException;
+import exception.PlayerNotInGameException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -15,6 +17,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  *
@@ -42,13 +46,20 @@ public class Game {
     private Board board;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT)
     private List<Player> players;
 
     @OneToOne
     private Player activePlayer;
 
+    @OneToOne
+    private Player winner;
+
     @Column(nullable = false)
     private int activePlayerNumber;
+
+    @Column(nullable = false)
+    private boolean isOpen;
 
     // Constructors ----------------------------
     protected Game() {
@@ -57,6 +68,7 @@ public class Game {
     public Game(int playerAmount) {
         this.type = "NORMAL";
         this.playerAmount = playerAmount;
+        this.isOpen = true;
         this.players = new ArrayList<>();
         this.board = new Board(Game.GAME_SIZE, Game.GAME_SIZE);
     }
@@ -127,11 +139,25 @@ public class Game {
     }
 
     /**
+     * @return the winner
+     */
+    public Player getWinner() {
+        return winner;
+    }
+
+    /**
+     * @param winner the winner to set
+     */
+    public void setWinner(Player winner) {
+        this.winner = winner;
+    }
+
+    /**
      * @param player the player to add
      * @throws exception.GameFullException
      * @throws exception.GameEmptyException
      * @throws exception.PlayerInGameException
-     * 
+     *
      * Metodo que agrega un Jugador al Juego
      */
     public void addPlayer(Player player) throws GameFullException, GameEmptyException, PlayerInGameException {
@@ -156,9 +182,22 @@ public class Game {
 
     /**
      * @param player the player to remove
+     * @throws exception.GameNotFinishedException
+     * @throws exception.PlayerNotInGameException
+     *
+     * Metodo que elimina un jugador del juego
      */
-    public void removePlayer(Player player) {
-        this.getPlayers().remove(player);
+    public void removePlayer(Player player) throws GameNotFinishedException, PlayerNotInGameException {
+        if (this.getPlayers().size() < this.getPlayerAmount()) {
+            if (this.getPlayers().contains(player)) {
+                this.getPlayers().remove(player);
+                player.setActualGame(null);
+            } else {
+                throw new PlayerNotInGameException();
+            }
+        } else {
+            throw new GameNotFinishedException();
+        }
     }
 
     /**
@@ -189,6 +228,20 @@ public class Game {
         this.activePlayerNumber = activePlayerNumber;
     }
 
+    /**
+     * @return the isOpen
+     */
+    public boolean isIsOpen() {
+        return isOpen;
+    }
+
+    /**
+     * @param isOpen the isOpen to set
+     */
+    public void setIsOpen(boolean isOpen) {
+        this.isOpen = isOpen;
+    }
+
     // Methods ----------------------------
     /**
      * @return Player.
@@ -197,26 +250,25 @@ public class Game {
      * retorna al mismo
      */
     public Player checkWinner() {
-        Player winner = null;
         // Chequea si algun jugador formo una linea
         for (Player player : this.getPlayers()) {
             if (this.getBoard().searchLine(player)) {
-                winner = player;
+                this.setWinner(player);
             }
         }
         // En caso de empate y si el tablero esta lleno, chequea el jugador con mas pelotas
-        if (winner == null && this.isGameFull()) {
+        if (this.getWinner() == null && this.isGameFull()) {
             int maxCountBalls = -1;
             for (Player player : this.getPlayers()) {
                 if (player.getSlots().size() > maxCountBalls) {
                     maxCountBalls = player.getSlots().size();
-                    winner = player;
+                    this.setWinner(player);
                 }
             }
 
         }
         //TO-DO caso que aun siga en empate
-        return winner;
+        return this.getWinner();
     }
 
     /**
@@ -242,8 +294,9 @@ public class Game {
      *
      */
     public void nextPlayerTurn() {
-        this.getPlayers().get(this.getActivePlayerNumber()).playTurn();
         this.setActivePlayerNumber((this.getActivePlayerNumber() + 1) % this.getPlayers().size());
+        this.setActivePlayer(this.getPlayers().get(this.getActivePlayerNumber()));
+        this.getActivePlayer().playTurn();
     }
 
     /**
@@ -255,18 +308,18 @@ public class Game {
     public void startGame() throws GameEmptyException {
 
         if (this.getPlayers().size() == this.getPlayerAmount()) {
+            // Cierra el juego para no permitir mas jugadores
+            this.setIsOpen(false);
             // Determina de forma aleatoria el primer Jugador
             Random randomNumber = new Random();
             int randomPlayerNumber = randomNumber.nextInt(this.getPlayers().size());
             this.setActivePlayerNumber(randomPlayerNumber);
             this.setActivePlayer(this.getPlayers().get(this.getActivePlayerNumber()));
-
             // Inicializa el Juego
-            this.nextPlayerTurn();
+            this.getActivePlayer().playTurn();
         } else {
             throw new GameEmptyException();
         }
 
     }
-
 }

@@ -22,10 +22,11 @@ public class GameLoader implements ApplicationListener<ContextRefreshedEvent>{
     @Override
     public void onApplicationEvent(ContextRefreshedEvent e) {
         
-        Game game = new Game(4);
+        Game game = new Game(2);
         this.gameRepository.save(game);
         
         Game game2 = new Game(4);
+        game2.setIsOpen(false);
         this.gameRepository.save(game2);
     }
 }
