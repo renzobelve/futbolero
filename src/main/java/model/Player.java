@@ -46,7 +46,8 @@ public class Player {
     @ManyToOne
     private Game actualGame;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
     private List<Question> questions;
 
     @ManyToOne
@@ -55,7 +56,8 @@ public class Player {
     @ManyToOne
     private Player challenger;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
     private List<SituationCard> situationCards;
 
     @OneToOne(cascade = CascadeType.ALL)

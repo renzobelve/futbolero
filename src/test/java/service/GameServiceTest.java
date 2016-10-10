@@ -6,6 +6,7 @@ import dto.PlayerDTO;
 import exception.GameEmptyException;
 import exception.GameFullException;
 import exception.GameNotFinishedException;
+import exception.GameNotOpenException;
 import exception.GameNullException;
 import exception.PlayerInGameException;
 import exception.PlayerNotInGameException;
@@ -34,7 +35,7 @@ public class GameServiceTest {
 
     @Autowired
     private GameService gameService;
-    
+
     @Autowired
     private PlayerService playerService;
 
@@ -101,7 +102,7 @@ public class GameServiceTest {
             Assert.fail(ex.getMessage());
         }
     }
-    
+
     @Test
     public void testNextPlayerTurn() {
         try {
@@ -119,17 +120,39 @@ public class GameServiceTest {
             GameDTO modifiedGame = this.gameService.nextPlayerTurn(startedGame);
             PlayerDTO playerTurn2 = modifiedGame.getActivePlayer();
             Assert.assertNotEquals(playerTurn1.getId(), playerTurn2.getId());
-            
+
         } catch (GameNullException | PlayerNullException | GameFullException | GameEmptyException | PlayerInGameException ex) {
             Assert.fail(ex.getMessage());
         }
     }
-    
+
     @Test
     public void testFindOpenGames() {
-        
         List<GameDTO> openGames = this.gameService.findOpen();
         Assert.assertEquals(1, openGames.size());
+
+    }
+
+    @Test
+    public void testDeleteGame() {
+        GameDTO gameDTO = new GameDTO();
+        gameDTO.setPlayerAmount(4); 
+        // Creador
+        PlayerDTO playerDTO = new PlayerDTO();
+        playerDTO.setId((long) 67);
+        // Jugadores
+        PlayerDTO playerDTO2 = new PlayerDTO();
+        playerDTO2.setId((long) 69);
+
+        // Test create
+        try {
+            GameDTO newGame = this.gameService.createGame(gameDTO, playerDTO);
+            newGame = this.gameService.findOneById((long) newGame.getId());
+            this.gameService.deleteGame(newGame);
+        } catch (GameFullException | GameEmptyException | PlayerNullException | PlayerInGameException | GameNullException | GameNotOpenException ex) {
+            Assert.fail(ex.getMessage());
+        }
+        
         
     }
 }

@@ -2,8 +2,12 @@ package service;
 
 import dto.GameDTO;
 import dto.PlayerDTO;
+import dto.QuestionDTO;
 import exception.PlayerNullException;
+import java.util.ArrayList;
+import java.util.List;
 import model.Player;
+import model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.PlayerRepository;
@@ -19,6 +23,9 @@ public class PlayerService {
 
     @Autowired
     private PlayerRepository playerRepository;
+    
+    @Autowired
+    private QuestionService questionService;
 
     /**
      * @param id
@@ -56,7 +63,12 @@ public class PlayerService {
                 gameDTO.setId(player.getActualGame().getId());
                 playerDTO.setActualGame(gameDTO);
             }
-
+            playerDTO.setChallengeQuestion(this.questionService.convertToQuestionDTO(player.getChallengeQuestion()));
+            List<QuestionDTO> questions = new ArrayList<>();
+            for(Question question : player.getQuestions()){
+                questions.add(this.questionService.convertToQuestionDTO(question));
+            }
+            playerDTO.setQuestions(questions);
             return playerDTO;
         } else {
             return null;

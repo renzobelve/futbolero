@@ -5,6 +5,7 @@ import dto.PlayerDTO;
 import exception.GameEmptyException;
 import exception.GameFullException;
 import exception.GameNotFinishedException;
+import exception.GameNotOpenException;
 import exception.GameNullException;
 import exception.PlayerInGameException;
 import exception.PlayerNotInGameException;
@@ -184,6 +185,30 @@ public class GameService {
         this.gameRepository.save(game);
 
         return this.convertToGameDTO(game);
+    }
+
+    /**
+     * @param gameDTO
+     * @throws exception.GameNullException
+     * @throws exception.GameNotOpenException
+     *
+     * Metodo para eliminar un juego no iniciado
+     */
+    @Transactional
+    public void deleteGame(GameDTO gameDTO) throws GameNullException, GameNotOpenException {
+        // Se busca el juego
+        Game game = this.gameRepository.findOne(gameDTO.getId());
+        if (game == null) {
+            throw new GameNullException();
+        }
+        // Se intenta eliminar un juego no iniciado
+        if(game.isIsOpen()){
+            game.removePlayers();
+            this.gameRepository.save(game);
+            this.gameRepository.delete(game);
+        }else{
+            throw new GameNotOpenException();
+        }
     }
 
     /**

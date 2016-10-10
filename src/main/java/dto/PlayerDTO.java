@@ -1,5 +1,7 @@
 package dto;
 
+import java.util.List;
+
 /**
  *
  * @author renzobelve
@@ -11,6 +13,8 @@ public class PlayerDTO {
     private Long id;
     private String name;
     private GameDTO actualGame;
+    private List<QuestionDTO> questions;
+    private QuestionDTO challengeQuestion;
 
     /**
      * @return the name
@@ -52,6 +56,34 @@ public class PlayerDTO {
      */
     public void setActualGame(GameDTO actualGame) {
         this.actualGame = actualGame;
+    }
+
+    /**
+     * @return the questions
+     */
+    public List<QuestionDTO> getQuestions() {
+        return questions;
+    }
+
+    /**
+     * @param questions the questions to set
+     */
+    public void setQuestions(List<QuestionDTO> questions) {
+        this.questions = questions;
+    }
+
+    /**
+     * @return the challengeQuestion
+     */
+    public QuestionDTO getChallengeQuestion() {
+        return challengeQuestion;
+    }
+
+    /**
+     * @param challengeQuestion the challengeQuestion to set
+     */
+    public void setChallengeQuestion(QuestionDTO challengeQuestion) {
+        this.challengeQuestion = challengeQuestion;
     }
     
 }

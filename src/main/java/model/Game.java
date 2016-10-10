@@ -6,6 +6,7 @@ import exception.GameNotFinishedException;
 import exception.PlayerInGameException;
 import exception.PlayerNotInGameException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import javax.persistence.CascadeType;
@@ -45,7 +46,7 @@ public class Game {
     @OneToOne(cascade = CascadeType.ALL)
     private Board board;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @Fetch(FetchMode.SELECT)
     private List<Player> players;
 
@@ -188,7 +189,7 @@ public class Game {
      * Metodo que elimina un jugador del juego
      */
     public void removePlayer(Player player) throws GameNotFinishedException, PlayerNotInGameException {
-        if (this.getPlayers().size() < this.getPlayerAmount()) {
+        if (this.isIsOpen()) {
             if (this.getPlayers().contains(player)) {
                 this.getPlayers().remove(player);
                 player.setActualGame(null);
@@ -197,6 +198,18 @@ public class Game {
             }
         } else {
             throw new GameNotFinishedException();
+        }
+    }
+
+    /**
+     *
+     * Metodo que elimina a todos los jugadores del juego
+     */
+    public void removePlayers() {
+        for (Iterator<Player> it = this.getPlayers().iterator(); it.hasNext();) {
+            Player player = it.next();
+            player.setActualGame(null);
+            it.remove();
         }
     }
 
