@@ -1,5 +1,6 @@
 package model;
 
+import exception.ChallengerNullException;
 import exception.PlayerStateWrongException;
 import exception.SituationWrongException;
 import exception.SlotEmptyException;
@@ -16,8 +17,9 @@ import javax.persistence.Entity;
 @Entity
 public class WaitingState extends PlayerState {
 
-    protected WaitingState(){}
-    
+    protected WaitingState() {
+    }
+
     public WaitingState(Player player) {
         super(player);
     }
@@ -32,16 +34,20 @@ public class WaitingState extends PlayerState {
     }
 
     @Override
-    public void selectQuestion(Question question) {
-        this.getPlayer().getChallenger().setChallengeQuestion(question);
-        this.getPlayer().getQuestions().remove(question);
-        if (this.getPlayer().getQuestions().isEmpty()) {
-            this.getPlayer().setHasToDrawQuestion(true);
+    public void selectQuestion(Question question) throws ChallengerNullException {
+        if (this.getPlayer().getChallenger() != null) {
+            this.getPlayer().getChallenger().setChallengeQuestion(question);
+            this.getPlayer().getQuestions().remove(question);
+            if (this.getPlayer().getQuestions().isEmpty()) {
+                this.getPlayer().setHasToDrawQuestion(true);
+            }
+        } else {
+            throw new ChallengerNullException();
         }
     }
 
     @Override
-    public void changeQuestion() throws PlayerStateWrongException {
+    public void changeQuestion() throws PlayerStateWrongException, ChallengerNullException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 

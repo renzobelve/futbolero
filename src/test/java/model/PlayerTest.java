@@ -1,8 +1,11 @@
 package model;
 
+import exception.ChallengerNullException;
 import exception.PlayerStateWrongException;
 import exception.QuestionMalformedException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;
@@ -54,7 +57,11 @@ public class PlayerTest {
         Question question = this.player1.getQuestions().get(0);
         this.player2.playTurn();
         this.player2.selectAsChallanger(this.player1);
-        this.player1.selectQuestion(question);
+        try {
+            this.player1.selectQuestion(question);
+        } catch (ChallengerNullException ex) {
+            Assert.fail(ex.getMessage());
+        }
         Assert.assertNotNull(player2.getChallengeQuestion());
         Assert.assertEquals(0, this.player1.getQuestions().size());
 
@@ -153,7 +160,11 @@ public class PlayerTest {
         this.player2.playTurn();
         Assert.assertEquals(this.player2.getState().getClass(), StartState.class);
         this.player2.selectAsChallanger(this.player1);
-        this.player1.selectQuestion(this.player1.getQuestions().get(0));
+        try {
+            this.player1.selectQuestion(this.player1.getQuestions().get(0));
+        } catch (ChallengerNullException ex) {
+            Assert.fail(ex.getMessage());
+        }
         this.player2.answerQuestion(this.player2.getChallengeQuestion().getAnswers().get(1));
         Assert.assertEquals(this.player2.getState().getClass(), BoardState.class);
         this.player2.finishTurn();
@@ -201,10 +212,10 @@ public class PlayerTest {
         this.player2.playTurn();
         Assert.assertEquals(this.player2.getState().getClass(), StartState.class);
         this.player2.selectAsChallanger(this.player1);
-        this.player1.selectQuestion(this.player1.getQuestions().get(0));
         try {
+            this.player1.selectQuestion(this.player1.getQuestions().get(0));
             this.player2.changeQuestion();
-        } catch (PlayerStateWrongException ex) {
+        } catch (ChallengerNullException | PlayerStateWrongException ex) {
             Assert.fail(ex.getMessage());
         }
         Assert.assertEquals(1, this.player1.getQuestions().size());
@@ -216,7 +227,11 @@ public class PlayerTest {
         this.player2.playTurn();
         Assert.assertEquals(this.player2.getState().getClass(), StartState.class);
         this.player2.selectAsChallanger(this.player1);
-        this.player1.selectQuestion(this.player1.getQuestions().get(0));
+        try {
+            this.player1.selectQuestion(this.player1.getQuestions().get(0));
+        } catch (ChallengerNullException ex) {
+            Assert.fail(ex.getMessage());
+        }
         Assert.assertTrue(this.player2.answerQuestion(this.player2.getChallengeQuestion().getAnswers().get(1)));
         Assert.assertEquals(this.player2.getState().getClass(), BoardState.class);
     }
@@ -227,10 +242,10 @@ public class PlayerTest {
         this.player2.playTurn();
         Assert.assertEquals(this.player2.getState().getClass(), StartState.class);
         this.player2.selectAsChallanger(this.player1);
-        this.player1.selectQuestion(this.player1.getQuestions().get(0));
         try {
+            this.player1.selectQuestion(this.player1.getQuestions().get(0));
             this.player2.changeAnswerTime();
-        } catch (PlayerStateWrongException ex) {
+        } catch (ChallengerNullException | PlayerStateWrongException ex) {
             Assert.fail(ex.getMessage());
         }
         Assert.assertNotEquals(this.player2.getChallengeQuestion().getAnswerTime(), Question.QUESTION_TIME);
@@ -242,10 +257,11 @@ public class PlayerTest {
         this.player2.playTurn();
         Assert.assertEquals(this.player2.getState().getClass(), StartState.class);
         this.player2.selectAsChallanger(this.player1);
-        this.player1.selectQuestion(this.player1.getQuestions().get(0));
+
         try {
+            this.player1.selectQuestion(this.player1.getQuestions().get(0));
             this.player2.discardAnswers();
-        } catch (PlayerStateWrongException ex) {
+        } catch (PlayerStateWrongException | ChallengerNullException ex) {
             Assert.fail(ex.getMessage());
         }
         Assert.assertEquals(2, this.player2.getChallengeQuestion().getAnswers().size());
@@ -257,12 +273,13 @@ public class PlayerTest {
         this.player2.playTurn();
         Assert.assertEquals(this.player2.getState().getClass(), StartState.class);
         this.player2.selectAsChallanger(this.player1);
-        this.player1.selectQuestion(this.player1.getQuestions().get(0));
-        this.player2.answerQuestion(this.player2.getChallengeQuestion().getAnswers().get(1));
-        Assert.assertEquals(this.player2.getState().getClass(), BoardState.class);
+
         try {
+            this.player1.selectQuestion(this.player1.getQuestions().get(0));
+            this.player2.answerQuestion(this.player2.getChallengeQuestion().getAnswers().get(1));
+            Assert.assertEquals(this.player2.getState().getClass(), BoardState.class);
             this.player2.invalidateQuestion();
-        } catch (PlayerStateWrongException ex) {
+        } catch (PlayerStateWrongException | ChallengerNullException ex) {
             Assert.fail(ex.getMessage());
         }
         Assert.assertNull(this.player2.getChallengeQuestion());
@@ -277,7 +294,11 @@ public class PlayerTest {
         this.player2.playTurn();
         Assert.assertEquals(this.player2.getState().getClass(), StartState.class);
         this.player2.selectAsChallanger(this.player1);
-        this.player1.selectQuestion(this.player1.getQuestions().get(0));
+        try {
+            this.player1.selectQuestion(this.player1.getQuestions().get(0));
+        } catch (ChallengerNullException ex) {
+            Assert.fail(ex.getMessage());
+        }
         this.player2.answerQuestion(this.player2.getChallengeQuestion().getAnswers().get(1));
         Assert.assertEquals(this.player2.getState().getClass(), BoardState.class);
         this.player2.drawSituation(new SituationCard("Amonestacion", "Situacion de Amonestacion"));

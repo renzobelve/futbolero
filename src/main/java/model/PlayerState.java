@@ -1,5 +1,6 @@
 package model;
 
+import exception.ChallengerNullException;
 import exception.PlayerStateWrongException;
 import exception.SituationWrongException;
 import exception.SlotEmptyException;
@@ -82,19 +83,21 @@ public abstract class PlayerState {
 
     /**
      * @param question
+     * @throws exception.ChallengerNullException
      *
      * Metodo que selecciona una pregunta disponible y la setea como
      * challangeQuestion del jugador retado
      */
-    public abstract void selectQuestion(Question question);
+    public abstract void selectQuestion(Question question) throws ChallengerNullException;
 
     /**
      * @throws exception.PlayerStateWrongException
+     * @throws exception.ChallengerNullException
      *
      * Metodo que cambia la pregunta actual del jugador por otra de forma
      * aleatoria
      */
-    public abstract void changeQuestion() throws PlayerStateWrongException;
+    public abstract void changeQuestion() throws PlayerStateWrongException, ChallengerNullException;
 
     /**
      * @throws exception.PlayerStateWrongException

@@ -1,5 +1,6 @@
 package model;
 
+import exception.ChallengerNullException;
 import exception.PlayerStateWrongException;
 import exception.SituationWrongException;
 import exception.SlotEmptyException;
@@ -374,21 +375,23 @@ public class Player {
 
     /**
      * @param question
+     * @throws exception.ChallengerNullException
      *
      * Metodo que selecciona una pregunta disponible y la setea como
      * challengeQuestion del jugador retado
      */
-    public void selectQuestion(Question question) {
+    public void selectQuestion(Question question) throws ChallengerNullException {
         this.getState().selectQuestion(question);
     }
 
     /**
      * @throws exception.PlayerStateWrongException
+     * @throws exception.ChallengerNullException
      *
      * Metodo que cambia la pregunta actual del jugador por otra de forma
      * aleatoria
      */
-    public void changeQuestion() throws PlayerStateWrongException {
+    public void changeQuestion() throws PlayerStateWrongException, ChallengerNullException {
         this.getState().changeQuestion();
     }
 

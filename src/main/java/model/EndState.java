@@ -1,5 +1,6 @@
 package model;
 
+import exception.ChallengerNullException;
 import exception.PlayerStateWrongException;
 import exception.SituationWrongException;
 import exception.SlotEmptyException;
@@ -28,12 +29,12 @@ public class EndState extends PlayerState {
     }
 
     @Override
-    public void selectQuestion(Question question) {
+    public void selectQuestion(Question question) throws ChallengerNullException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void changeQuestion() throws PlayerStateWrongException {
+    public void changeQuestion() throws PlayerStateWrongException, ChallengerNullException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
@@ -97,6 +98,12 @@ public class EndState extends PlayerState {
         this.getPlayer().setChallengeQuestion(null);
         this.getPlayer().getChallenger().setChallenger(null);
         this.getPlayer().setChallenger(null);
+        this.getPlayer().setCountAnswers(Question.QUESTION_ANSWERS);
+        this.getPlayer().setAnswerTime(Question.QUESTION_TIME);
+        this.getPlayer().setHasChange(false);
+        this.getPlayer().setHasNextTurn(true);
+        this.getPlayer().setHasToDrawQuestion(false);
+        this.getPlayer().setIsOffside(false);
         this.changeState(new WaitingState(this.getPlayer()));
     }
 

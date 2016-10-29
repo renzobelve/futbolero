@@ -1,5 +1,6 @@
 package model;
 
+import exception.ChallengerNullException;
 import exception.PlayerStateWrongException;
 import exception.SituationWrongException;
 import exception.SlotEmptyException;
@@ -29,12 +30,12 @@ public class StartState extends PlayerState {
     }
 
     @Override
-    public void selectQuestion(Question question) {
+    public void selectQuestion(Question question) throws ChallengerNullException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
     @Override
-    public void changeQuestion() throws PlayerStateWrongException {
+    public void changeQuestion() throws PlayerStateWrongException, ChallengerNullException {
         throw new UnsupportedOperationException("No se puede realizar esta accion en este estado");
     }
 
