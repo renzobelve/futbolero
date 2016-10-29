@@ -139,7 +139,8 @@ public class GameService {
      * @return GameDTO
      * @throws exception.GameNullException
      *
-     * Metodo para manejar el turno de cada jugador
+     * Metodo para manejar el turno de cada jugador y chequea si existe ganador
+     * al finalizar cada turno
      */
     @Transactional
     public GameDTO nextPlayerTurn(GameDTO gameDTO) throws GameNullException {
@@ -202,11 +203,11 @@ public class GameService {
             throw new GameNullException();
         }
         // Se intenta eliminar un juego no iniciado
-        if(game.isIsOpen()){
+        if (game.isIsOpen()) {
             game.removePlayers();
             this.gameRepository.save(game);
             this.gameRepository.delete(game);
-        }else{
+        } else {
             throw new GameNotOpenException();
         }
     }

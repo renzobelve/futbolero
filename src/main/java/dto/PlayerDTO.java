@@ -15,6 +15,7 @@ public class PlayerDTO {
     private GameDTO actualGame;
     private List<QuestionDTO> questions;
     private QuestionDTO challengeQuestion;
+    private List<SituationCardDTO> situationCards;
 
     /**
      * @return the name
@@ -84,6 +85,20 @@ public class PlayerDTO {
      */
     public void setChallengeQuestion(QuestionDTO challengeQuestion) {
         this.challengeQuestion = challengeQuestion;
+    }
+
+    /**
+     * @return the situationCards
+     */
+    public List<SituationCardDTO> getSituationCards() {
+        return situationCards;
+    }
+
+    /**
+     * @param situationCards the situationCards to set
+     */
+    public void setSituationCards(List<SituationCardDTO> situationCards) {
+        this.situationCards = situationCards;
     }
     
 }

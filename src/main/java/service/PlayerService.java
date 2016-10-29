@@ -3,11 +3,13 @@ package service;
 import dto.GameDTO;
 import dto.PlayerDTO;
 import dto.QuestionDTO;
+import dto.SituationCardDTO;
 import exception.PlayerNullException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Player;
 import model.Question;
+import model.SituationCard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.PlayerRepository;
@@ -26,6 +28,9 @@ public class PlayerService {
     
     @Autowired
     private QuestionService questionService;
+    
+    @Autowired
+    private SituationCardService situationCardService;
 
     /**
      * @param id
@@ -69,6 +74,11 @@ public class PlayerService {
                 questions.add(this.questionService.convertToQuestionDTO(question));
             }
             playerDTO.setQuestions(questions);
+            List<SituationCardDTO> situationCards = new ArrayList<>();
+            for(SituationCard situationCard : player.getSituationCards()){
+                situationCards.add(this.situationCardService.convertToSituationCardDTO(situationCard));
+            }
+            playerDTO.setSituationCards(situationCards);
             return playerDTO;
         } else {
             return null;
